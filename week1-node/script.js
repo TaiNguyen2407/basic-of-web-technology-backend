@@ -16,4 +16,3 @@ const output = 'testing nodemon, using lodash to convert this camel case';
 console.log(output);
 console.log(_.camelCase(output));
 
-
