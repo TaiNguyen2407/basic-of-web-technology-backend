@@ -3,16 +3,17 @@
 // catController
 const catModel = require('../models/catModel');
 
-const getCats = (req, res) => {
-    res.json(catModel.cats);
+
+// ./controllers/catController.js
+const getCats = async (req, res) => {
+  const cats = await catModel.getAllCats(res);
+  res.json(cats);
 };
 
-const getCat = (req, res) => {
+const getCat = async (req, res) => {
     //res.send('From this endpoint you can get cat with id' + req.params.catId);
     //Choose only one object with matching id
-    const cat = catModel.cats.filter(cat => {
-        return req.params.catId == cat.id;
-    })[0];
+    const cat = await catModel.getCatById(res, req.params.catId);
     if (cat) {
         res.json(cat); 
     } else {

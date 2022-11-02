@@ -3,6 +3,8 @@
 const express = require('express');
 const router = express.Router();
 const catController = require('../controllers/catController');
+const multer = require('multer');
+const upload = multer({dest: 'uploads/'});
 
   router.get('/', catController.getCats);
   
@@ -10,7 +12,7 @@ const catController = require('../controllers/catController');
   router.get('/:catId', catController.getCat);
   
   
-  router.post('/', catController.createCat);
+  router.post('/', upload.single('cat'),catController.createCat);
   
   router.put('/', (req,res) => {
     res.send('From this endpoint you can edit cats');
