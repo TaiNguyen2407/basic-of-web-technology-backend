@@ -1,19 +1,41 @@
 'use strict';
-const users = [
-  {
-    id: '1',
-    name: 'John Doe',
-    email: 'john@metropolia.fi',
-    password: '1234',
-  },
-  {
-    id: '2',
-    name: 'Jane Doez',
-    email: 'jane@metropolia.fi',
-    password: 'qwer',
-  },
-];
+
+const pool = require('../database/db');
+const promisePool = pool.promise();
+
+const getAllUsers = async (res) => {
+  try {
+    const [rows] = await promisePool.query("SELECT * FROM wop_user");
+    return rows;
+  } catch(e){
+    console.error("error", e.message);
+    res.status(500).send(e.message);
+  }
+};
+
+const getUserbyId = async (res, userId) => {
+  try {
+    const [rows] = await promisePool.query("SELECT * FROM wop_user WHERE user_id = ?", [userId]);
+    return rows[0];
+  } catch(e){
+    console.error("error", e.message);
+    res.status(500).send(e.message);
+  }
+}
+
+const addUser = async (res, data) => {
+  const {name,email,passwd} = data;
+  try {
+    await promisePool.query("INSERT INTO wop_user(name,email,password) VALUES (?, ?, ?)", [name, email, passwd]);
+    res.send("Function is working fine");
+  }catch(e){
+    console.error("error", e.message);
+    res.status(500).send(e.message);
+  }
+}
 
 module.exports = {
-  users,
+  getAllUsers,
+  getUserbyId,
+  addUser
 };

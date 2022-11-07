@@ -1,24 +1,21 @@
 'user strict';
 const userModel = require('../models/userModel');
 
-const getUsers = (req,res) => {
+const getUsers =  async (req,res) => {
     //Remove password property from user item
-    res.json(userModel.users.map(user => {
-            delete user.password;
-            return user;
-        })
-    );
+    const users = await userModel.getAllUsers(res);
+    // res.json(userModel.getAllUsers.map(user => {
+    //     delete user.password;
+    //     return user;
+    // }));
+    res.json(users);
 };
 
-const getUser = (req, res) => {
-    const user = userModel.users.filter(user => {
-        return req.params.userId = user.id;
-    })[0];
-
-    if (user) {
-        delete user.password;
+const getUser = async (req, res) => {
+    const user = await userModel.getUserbyId(res, req.params.userId);
+    if (user){
         res.json(user);
-    } else{
+    } else {
         res.sendStatus(404);
     }
     
@@ -28,14 +25,13 @@ const modifyUser = (req, res) => {
     res.json();
 };
 
-const createUser = (req,res) => {
-    console.log(req.body);
-    const userInfo = `username: ${req.body.name}, email: ${req.body.email}`;
-    res.send('Adding new user ' + userInfo);
+const createUser = async (req,res) => {
+    await userModel.addUser(res,req.body);
 };
 
 const deleteUser = (req, res) => {
-
+    console.log(req.body);
+    res.json(req.body);
 }; 
 
 module.exports = {
