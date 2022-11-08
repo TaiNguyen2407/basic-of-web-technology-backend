@@ -23,7 +23,7 @@ const getCat = async (req, res) => {
 };
 
 const modifyCat = async (req, res) => {
-    await catModel.updateCat(res,req.body, req.params.catId);
+    await catModel.updateCat(res,req.body);
 };
 
 const createCat = async (req, res) => {
