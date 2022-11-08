@@ -14,12 +14,9 @@ const upload = multer({dest: 'uploads/'});
   
   router.post('/', upload.single('cat'),catController.createCat);
   
-  router.put('/', (req,res) => {
-    res.send('From this endpoint you can edit cats');
-  });
+  router.put('/', catController.modifyCat);
   
-  router.delete('/', (req,res) => {
-    res.send('From this endpoint you can delete cats');
-  });
+  router.delete('/:catId', catController.deleteCat
+  );
 
 module.exports = router;

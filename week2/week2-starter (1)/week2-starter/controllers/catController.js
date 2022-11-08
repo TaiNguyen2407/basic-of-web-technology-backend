@@ -22,16 +22,16 @@ const getCat = async (req, res) => {
 
 };
 
-const modifyCat = (req, res) => {
-    res.json();
+const modifyCat = async (req, res) => {
+    await catModel.updateCat(res,req.body, req.params.catId);
 };
 
 const createCat = async (req, res) => {
-    await catModel.addCat(res,req.body);
+    await catModel.addCat(res,req.body,req.file);
 };
 
-const deleteCat = (req, res) => {
-
+const deleteCat = async (req, res) => {
+    await catModel.deleteCat(res,req.params.catId);
 };
 
 module.exports = {
