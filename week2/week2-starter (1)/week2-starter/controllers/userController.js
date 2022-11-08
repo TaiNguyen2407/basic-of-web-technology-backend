@@ -2,12 +2,7 @@
 const userModel = require('../models/userModel');
 
 const getUsers =  async (req,res) => {
-    //Remove password property from user item
     const users = await userModel.getAllUsers(res);
-    // res.json(userModel.getAllUsers.map(user => {
-    //     delete user.password;
-    //     return user;
-    // }));
     res.json(users);
 };
 
@@ -21,13 +16,17 @@ const getUser = async (req, res) => {
     
 }
 
+const createUser = async (req,res) => {
+    const result = await userModel.addUser(res,req.body);
+    res.status(201).json(result);
+};
+
+
 const modifyUser = (req, res) => {
     res.json();
 };
 
-const createUser = async (req,res) => {
-    await userModel.addUser(res,req.body);
-};
+
 
 const deleteUser = (req, res) => {
     console.log(req.body);

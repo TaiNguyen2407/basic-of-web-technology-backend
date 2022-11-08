@@ -8,11 +8,16 @@ const userRouter = require('./routes/userRoute');
 
 const port = 3000;
 
+//server uploaded files
+app.use("/",express.static('uploads'));
+
+
 app.use(cors());
 app.use(express.json()); //for parsing application/json
 app.use(express.urlencoded({
     extended: true
 })) //For parsing application/x-www-form-urlencoded
+
 
 app.use('/cat', catRouter);
 app.use('/user', userRouter);

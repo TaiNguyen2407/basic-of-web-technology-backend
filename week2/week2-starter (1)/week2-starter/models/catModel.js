@@ -30,7 +30,7 @@ const addCat = async (res, data, dataImg) => {
   const {filename} = dataImg;
   try {
     await promisePool.query("INSERT INTO wop_cat(name, weight, owner,filename, birthdate) VALUES (?, ?, ?, ?, ?)", [name, weight, owner, filename, birthdate]);
-    res.send("Function is working fine");
+    res.send("Added cat");
   }catch(e){
     console.error("error", e.message);
     res.status(500).send(e.message);

@@ -27,11 +27,18 @@ const modifyCat = async (req, res) => {
 };
 
 const createCat = async (req, res) => {
+    console.log('creating a new cat:', req.body);
     await catModel.addCat(res,req.body,req.file);
 };
 
 const deleteCat = async (req, res) => {
-    await catModel.deleteCat(res,req.params.catId);
+    console.log('deleting a cat:', req.params.catId);
+    const result =  await catModel.deleteCat(res,req.params.catId);
+    if (result.affectedRows > 0){
+        res.json({message: 'cat deleted'});
+    } else {
+        res.status(404).json({message: 'cat was already missing'});
+    }
 };
 
 module.exports = {
@@ -40,6 +47,6 @@ module.exports = {
     modifyCat,
     createCat,
     deleteCat
-}
+} 
 
 

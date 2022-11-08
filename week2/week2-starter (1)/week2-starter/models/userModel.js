@@ -5,7 +5,7 @@ const promisePool = pool.promise();
 
 const getAllUsers = async (res) => {
   try {
-    const [rows] = await promisePool.query("SELECT * FROM wop_user");
+    const [rows] = await promisePool.query("SELECT user_id, name, email, role FROM wop_user");
     return rows;
   } catch(e){
     console.error("error", e.message);
@@ -15,7 +15,7 @@ const getAllUsers = async (res) => {
 
 const getUserbyId = async (res, userId) => {
   try {
-    const [rows] = await promisePool.query("SELECT * FROM wop_user WHERE user_id = ?", [userId]);
+    const [rows] = await promisePool.query("SELECT name, email, role FROM wop_user WHERE user_id = ?", [userId]);
     return rows[0];
   } catch(e){
     console.error("error", e.message);
@@ -26,8 +26,7 @@ const getUserbyId = async (res, userId) => {
 const addUser = async (res, data) => {
   const {name,email,passwd} = data;
   try {
-    await promisePool.query("INSERT INTO wop_user(name,email,password) VALUES (?, ?, ?)", [name, email, passwd]);
-    res.send("Function is working fine");
+    const result = await promisePool.query("INSERT INTO wop_user(name,email,password) VALUES (?, ?, ?)", [name, email, passwd]);
   }catch(e){
     console.error("error", e.message);
     res.status(500).send(e.message);
