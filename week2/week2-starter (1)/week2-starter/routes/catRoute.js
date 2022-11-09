@@ -12,10 +12,12 @@ router
   .post(upload.single('cat'),catController.createCat)
   .put(catController.modifyCat);
   
+  
 router
   .route("/:id")
   .get(catController.getCat)
-  .delete(catController.deleteCat);
+  .delete(catController.deleteCat)
+  .put(catController.modifyCat);
   
 
 module.exports = router;

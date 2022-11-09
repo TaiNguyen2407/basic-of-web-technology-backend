@@ -8,8 +8,8 @@ const userRouter = require('./routes/userRoute');
 
 const port = 3000;
 
-//server uploaded files
-app.use("/",express.static('uploads'));
+//serve uploaded files
+app.use(express.static('uploads'));
 
 
 app.use(cors());

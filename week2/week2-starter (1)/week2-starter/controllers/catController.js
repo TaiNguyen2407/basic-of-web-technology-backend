@@ -23,7 +23,14 @@ const getCat = async (req, res) => {
 };
 
 const modifyCat = async (req, res) => {
-    await catModel.updateCat(res,req.body);
+    const cat = req.body;
+    const catId = req.params.catId;
+    const result = await catModel.updateCatById(res, cat, catId);
+    // if (result.affectedRows > 0){
+    //     res.json({message: 'cat edited', catId: catId});
+    // } else {
+    //     res.status(404).json({message: 'nothing changed'});
+    // }
 };
 
 const createCat = async (req, res) => {
@@ -34,11 +41,11 @@ const createCat = async (req, res) => {
 const deleteCat = async (req, res) => {
     console.log('deleting a cat:', req.params.catId);
     const result =  await catModel.deleteCat(res,req.params.catId);
-    if (result.affectedRows > 0){
-        res.json({message: 'cat deleted'});
-    } else {
-        res.status(404).json({message: 'cat was already missing'});
-    }
+    // if (result.affectedRows > 0){
+    //     res.json({message: 'cat deleted'});
+    // } else {
+    //     res.status(404).json({message: 'cat was already missing'});
+    // }
 };
 
 module.exports = {
