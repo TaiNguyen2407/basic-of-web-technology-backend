@@ -26,9 +26,29 @@ const renderResults = (data) => {
         const h3 = document.createElement('h3');
         h3.innerText = data[i].show.name;
         const img = document.createElement('img');
-        img.src = data[i].show.image.medium;
-        results.append(h3);
+        img.src = data[i].show.image.medium ? data[i].show.image.medium :'http://placekitten.com/200/300';
+        const officialSite = document.createElement('a');
+        officialSite.href = data[i].show.officialSite;
+        officialSite.innerText = "Official Website";
+        officialSite.style.display = 'block';
+        const summary = document.createElement('p');
+        summary.innerHTML = data[i].show.summary;
+
+        const genreList = data[i].show.genres;
+        const genres = document.createElement('div');
+        for (let j = 0; j < genreList.length; j++) {
+            const genre = document.createElement('span');
+            genre.innerText = genreList[j];
+            if (j !== (genres.length - 1)){
+                genre.innerText+=" | "
+            }
+            genres.append(genre);
+        }
+        results.append(h3); 
         results.append(img);
+        results.append(officialSite);
+        results.append(summary);
+        results.append(genres)
     }
 };
 
