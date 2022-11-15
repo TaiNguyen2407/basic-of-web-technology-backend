@@ -2,6 +2,7 @@
 
 // catController
 const catModel = require('../models/catModel');
+const {validationResult} = require('express-validator');
 
 
 // ./controllers/catController.js
@@ -34,8 +35,18 @@ const modifyCat = async (req, res) => {
 };
 
 const createCat = async (req, res) => {
-    console.log('creating a new cat:', req.body);
-    await catModel.addCat(res,req.body,req.file);
+    const errors = validationResult(req);
+    
+    
+    if (errors.isEmpty()) {
+        const cat = req.body
+        console.log('creating a new cat:', cat);
+        const catId = await catModel.addCat(res,cat,req.file);
+        res.status(201).json({message: 'cate created', catId});
+    } else {
+        console.log('validation erros:', errors);
+        res.status(400).json({message: 'cate creation failed', errors: errors.array() });
+    }
 };
 
 const deleteCat = async (req, res) => {
