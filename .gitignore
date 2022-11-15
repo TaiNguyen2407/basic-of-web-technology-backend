@@ -1,2 +1,4 @@
 node_modules/
-week1-node/node_modules/
+week2/week2-starter (1)/week2-starter/uploads/*
+!week2/week2-starter (1)/week2-starter/uploads/.gitkeep
+!week2/week2-starter (1)/week2-starter/.env

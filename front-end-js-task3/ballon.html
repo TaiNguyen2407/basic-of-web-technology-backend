@@ -1,0 +1,30 @@
+<p id="balloon">🎈</p>
+
+<script>
+    const balloon = document.getElementById('balloon');
+
+    function changeBalloonSize(newSize){
+        size = newSize;
+        balloon.style.fontSize = size + 'px';
+    }
+
+    changeBalloonSize(20);
+
+
+    function changeBalloonSizeWithArrows(event){
+        if (event.key == "ArrowUp"){
+            if (size > 100){
+                balloon.textContent = "💥";
+                document.body.removeEventListener("keydown", changeBalloonSizeWithArrows);
+            }else {
+                changeBalloonSize(size * 1.1);
+                event.preventDefault();
+            }
+        } else if (event.key == "ArrowDown"){
+           changeBalloonSize(size * 0.9);
+            event.preventDefault();
+        }
+    };
+        
+    document.body.addEventListener("keydown", changeBalloonSizeWithArrows);
+</script>
