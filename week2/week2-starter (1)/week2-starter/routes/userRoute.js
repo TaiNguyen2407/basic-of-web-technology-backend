@@ -7,12 +7,13 @@ const upload = multer({dest: 'uploads/'});
 const { body } = require('express-validator');
 
 
-router.get('/', userController.getUsers)
+router
+    .get('/', userController.getUsers)
     .get('/:userId', userController.getUser)
     .post('/', 
-        body('email').isEmail(),
-        body('name').isLength( {min:3}),
-        body('passwd').isLength({min: 8}),  
+        body('email').isEmail().normalizeEmail(),
+        body('name').isLength({min:3}).trim().escape(),
+        body('passwd').isLength({min:8}).trim(),  
         userController.createUser)
     .put('/', (req,res) => {
         res.send('From this endpoint you can edit users.')

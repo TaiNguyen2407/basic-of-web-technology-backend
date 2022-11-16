@@ -5,18 +5,34 @@ const router = express.Router();
 const catController = require('../controllers/catController');
 const multer = require('multer');
 const { body } = require('express-validator');
-const upload = multer({dest: 'uploads/'});
+
+const fileFilter = (req, file, cb) => {
+  // The function should call `cb` with a boolean
+  // to indicate if the file should be accepted
+  const acceptedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+  if (acceptedTypes.includes(file.mimetype)) {
+    // To accept the file pass `true`, like so:
+    cb(null, true);
+  } else {
+    // To reject this file pass `false`, like so:
+    cb(null, false);
+  }
+};
+
+const upload = multer({dest: 'uploads/', fileFilter});
 
 router
   .route("/")
   .get(catController.getCats)
   .post(
     upload.single('cat'),
-    body('name').isAlphanumeric(),
+    body('name').isAlphanumeric().trim().escape(),
     body('birthdate').isDate(),
     body('weight').isFloat({min: 0.1, max: 30}),
     body('owner').isInt({min:1}),
+    body('filename'),
     catController.createCat)
+    // TODO: add validators for put method
   .put(catController.modifyCat);
   
   
@@ -24,6 +40,7 @@ router
   .route("/:id")
   .get(catController.getCat)
   .delete(catController.deleteCat)
+  // TODO: add validators, replace with controller and datamodel
   .put(catController.modifyCat);
   
 
