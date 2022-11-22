@@ -11,14 +11,18 @@ const dummyUser = {
   password : 'bar'
 };
 
-let loggedIn = true;
+let loggedIn = false;
 
 app.set('views', './views');
 app.set('view engine', 'pug');
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended:true})); //Form data
-// app.use(session());
+app.use(session({
+  secret: 'random', 
+  saveUninitialized: false,
+  resave: true,
+  cookie: {maxAge: 60000}}));
 
 
 app.get('/', (req, res) => {
@@ -30,7 +34,7 @@ app.get('/form', (req, res) => {
 });
 
 app.get('/secret', (req, res) => {
-  if (loggedIn) {
+  if (req.session.loggedIn) {
     res.render('secret');
   } else {
     res.redirect('/form');
@@ -40,16 +44,18 @@ app.get('/secret', (req, res) => {
 
 app.post('/login', (req, res) => {
   // check for username and password match
-  console.log(req.body);
   if (req.body.username == dummyUser.username && req.body.password == dummyUser.password) {
-    loggedIn = true;
-    res.redirect('/secret');
-  } else {
-    res.redirect('/form');
-    // res.('Wrong username or password');
+    //set session variable
+    req.session.loggedIn = true;
   }
-  
+  res.redirect('/secret');
 });
+
+app.get('/logout', (req, res) => {
+  req.session.loggedIn = false;
+  // res.clearCookie('connect.sid'); Coookie for the session
+  res.redirect('/');
+})
 
 app.get('/getCookie/', (req, res) => {
   console.log(req.cookies);
