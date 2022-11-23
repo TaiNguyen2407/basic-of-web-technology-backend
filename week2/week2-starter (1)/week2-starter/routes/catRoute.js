@@ -26,10 +26,9 @@ router
   .get(catController.getCats)
   .post(
     upload.single('cat'),
-    body('name').isAlphanumeric().trim().escape(),
+    body('name').isLength({min: 2}).trim().escape(),
     body('birthdate').isDate(),
     body('weight').isFloat({min: 0.1, max: 30}),
-    body('owner').isInt({min:1}),
     body('filename'),
     catController.createCat)
     // TODO: add validators for put method
@@ -43,7 +42,7 @@ router
   
   
 router
-  .route("/:id")
+  .route("/:catId")
   .get(catController.getCat)
   .delete(catController.deleteCat)
   // TODO: add validators, replace with controller and datamodel

@@ -14,7 +14,6 @@ const getUser = async (req, res) => {
     } else {
         res.sendStatus(404);
     }
-    
 }
 
 const createUser = async (req,res) => {
@@ -45,10 +44,15 @@ const deleteUser = (req, res) => {
     res.json(req.body);
 }; 
 
+const checkToken = (req, res) => {
+    res.json({user: req.user});
+};
+
 module.exports = {
     getUser,
     getUsers,
     modifyUser,
     createUser,
-    deleteUser
+    deleteUser,
+    checkToken
 }

@@ -9,6 +9,7 @@ const { body } = require('express-validator');
 
 router
     .get('/', userController.getUsers)
+    .get('/token', userController.checkToken)
     .get('/:userId', userController.getUser)
     .post('/', 
         body('email').isEmail().normalizeEmail(),
