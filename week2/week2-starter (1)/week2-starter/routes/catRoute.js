@@ -33,7 +33,13 @@ router
     body('filename'),
     catController.createCat)
     // TODO: add validators for put method
-  .put(catController.modifyCat);
+  .put(
+    body('name').isAlphanumeric().trim().escape(),
+    body('birthdate').isDate(),
+    body('weight').isFloat({min: 0.1, max: 30}),
+    body('owner').isInt({min:1}),
+    body('filename'),
+    catController.modifyCat);
   
   
 router
@@ -41,7 +47,13 @@ router
   .get(catController.getCat)
   .delete(catController.deleteCat)
   // TODO: add validators, replace with controller and datamodel
-  .put(catController.modifyCat);
+  .put(
+    body('name').isAlphanumeric().trim().escape(),
+    body('birthdate').isDate(),
+    body('weight').isFloat({min: 0.1, max: 30}),
+    body('owner').isInt({min:1}),
+    body('filename'),
+    catController.modifyCat);
   
 
 module.exports = router;

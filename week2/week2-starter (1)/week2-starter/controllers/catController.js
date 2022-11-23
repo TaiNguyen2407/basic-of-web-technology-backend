@@ -24,18 +24,23 @@ const getCat = async (req, res) => {
 };
 
 const modifyCat = async (req, res) => {
-    const cat = req.body;
-    const catId = req.params.catId;
-    const result = await catModel.updateCatById(res, cat, catId);
-    // if (result.affectedRows > 0){
-    //     res.json({message: 'cat edited', catId: catId});
-    // } else {
-    //     res.status(404).json({message: 'nothing changed'});
-    // }
+    const errors = validationResult(req);
+    if (!req.file) {
+        res.status(400).json({message: 'file missing or invalid'});
+    } else if (errors.isEmpty()) {
+        const cat = req.body;
+        console.log('creating a new cat:', cat);
+        const catId = await catModel.updateCatById(res,cat,req.params.catId);
+        res.status(201).json({message: 'cate edited', catId});
+    } else {
+        console.log('validation erros:', errors);
+        res.status(400).json({message: 'cate edit failed', errors: errors.array() });
+    }
 };
 
 const createCat = async (req, res) => {
     const errors = validationResult(req);
+    // File empty or missing (not passing multer's FileFilter in route)
     if (!req.file) {
         res.status(400).json({message: 'file missing or invalid'});
     } else if (errors.isEmpty()) {
@@ -52,11 +57,6 @@ const createCat = async (req, res) => {
 const deleteCat = async (req, res) => {
     console.log('deleting a cat:', req.params.catId);
     const result =  await catModel.deleteCat(res,req.params.catId);
-    // if (result.affectedRows > 0){
-    //     res.json({message: 'cat deleted'});
-    // } else {
-    //     res.status(404).json({message: 'cat was already missing'});
-    // }
 };
 
 module.exports = {
@@ -66,5 +66,3 @@ module.exports = {
     createCat,
     deleteCat
 } 
-
-
