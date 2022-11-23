@@ -56,8 +56,8 @@ const createCat = async (req, res) => {
 };
 
 const deleteCat = async (req, res) => {
-    console.log('deleting a cat:', req.params.catId, req.user.user_id);
-    const result =  await catModel.deleteCat(req.params.catId, req.user.user_id, res);
+    console.log('deleting a cat:', 'cat id: '  + req.params.catId, 'owner: ' +  req.user.user_id);
+    const result =  await catModel.deleteCatByAdmin(req.params.catId, req.user.role, res);
     if (result.affectedRows > 0){
         res.json({message: 'cat deleted'});
     } else {

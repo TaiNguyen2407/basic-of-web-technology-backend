@@ -45,21 +45,40 @@ const updateCatById = async (req, res) => {
   }
 };
 
-const deleteCat = async (catId, owner, res) => {
-  try {
-    const [rows] = await promisePool.query("DELETE FROM wop_cat WHERE cat_id = ? AND owner = ?", [catId, owner]);
-    // res.send("Cat deleted" + owner);
-    return rows;
-  }catch(e){
-    console.error("error", e.message);
-    res.status(500).send(e.message);
-  }
-}
+// const deleteCat = async (catId, owner, res) => {
+//   try {
+//     const [rows] = await promisePool.query("DELETE FROM wop_cat WHERE cat_id = ? AND owner = ?", [catId, owner]);
+//     return rows;
+//   }catch(e){
+//     console.error("error", e.message);
+//     res.status(500).send(e.message);
+//   }
+// }
 
+const deleteCatByAdmin = async (catId, user, res) => {
+  if (user.role == 1) {
+      try {
+        const [rows] = await promisePool.query("DELETE FROM wop_cat WHERE cat_id = ? AND owner = ?", [catId, owner]);
+        return rows;
+      }catch(e){
+        console.error("error", e.message);
+        res.status(500).send(e.message);
+      }
+  } else if (user.role == 0){
+    try {
+      const [rows] = await promisePool.query("DELETE FROM wop_cat WHERE catId = ?", [catId]);
+      return rows;
+    }catch(e){
+      console.error("error", e.message);
+      res.status(500).send(e.message);
+    }
+  }
+  
+}
 module.exports = {
   getAllCats,
   getCatById,
   addCat,
   updateCatById,
-  deleteCat
+  deleteCatByAdmin
 };
