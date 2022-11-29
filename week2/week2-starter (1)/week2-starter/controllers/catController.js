@@ -63,7 +63,6 @@ const deleteCat = async (req, res) => {
     } else {
         res.status(401, {message: 'cat deleted failed'});
     }
-
 };
 
 module.exports = {

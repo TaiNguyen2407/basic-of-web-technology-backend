@@ -47,6 +47,16 @@ const addUser = async (res, data) => {
   }
 }
 
+
+// const updateUserById = async (req, res) => {
+//   try {
+//     const user = [user.user_id, user.name, user.email, user.password, user.role];
+//     await promisePool.query('UPDATE wop_user WHERE SET name = ?, email = ?, role = ? WHERE user_id = ?')
+//   } catch () {
+    
+//   }
+// }
+
 module.exports = {
   getAllUsers,
   getUserbyId,
