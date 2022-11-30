@@ -4,6 +4,7 @@ const passport = require("passport");
 require("dotenv").config();
 const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator');
+const userModel = require('../models/userModel');
 
 const login = (req, res) => {
     passport.authenticate('local', {session: false}, (err, user, info) => {
@@ -42,9 +43,10 @@ const register = async (req, res) => {
         //Hash the input password and replace the clear text password with the hashed one before adding to the db
         const salt = await bcrypt.genSalt();
         const passwordHash = await bcrypt.hash(newUser.passwd, salt);
-        const result = await userModel.addUser(res,newUser);
         newUser.passwd = passwordHash;
+        const result = await userModel.addUser(res, newUser);
         res.status(201).json({message: 'user created', userId: result});
+        console.log(passwordHash);
     } else {
         res.status(400).json({message: 'user creation failed', errors: errors.array() });
     }
