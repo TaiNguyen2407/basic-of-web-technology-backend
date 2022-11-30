@@ -45,6 +45,7 @@ const deleteUser = (req, res) => {
 }; 
 
 const checkToken = (req, res) => {
+    delete req.user.password;
     res.json({user: req.user});
 };
 

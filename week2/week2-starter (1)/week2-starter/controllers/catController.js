@@ -3,6 +3,8 @@
 // catController
 const catModel = require('../models/catModel');
 const {validationResult} = require('express-validator');
+const makeThumbnail = require('../utils/image');
+// const getCoordinates = require('../utils/image');
 
 
 // ./controllers/catController.js
@@ -44,7 +46,10 @@ const createCat = async (req, res) => {
     if (!req.file) {
         res.status(400).json({message: 'file missing or invalid'});
     } else if (errors.isEmpty()) {
+        await makeThumbnail.makeThumbnail(req.file.path, req.file.name);
+        //TODO: use image.js/getCoord to extract exif-data/gps coords and add to the cat object as cat.coords property in array format (stringified)
         const cat = req.body;
+        cat.coords = JSON.stringify(await makeThumbnail.getCoordinates(req.file.path));
         cat.owner = req.user.user_id;
         console.log('creating a new cat:', cat);
         const catId = await catModel.addCat(res,cat,req.file);
